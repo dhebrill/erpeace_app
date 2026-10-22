@@ -105,6 +105,19 @@ create table if not exists public.products (
   updated_at   timestamptz   not null default now()
 );
 
+-- Generated columns used by the stock filters of the mobile application.
+alter table public.products
+  drop column if exists is_low_stock;
+alter table public.products
+  add column is_low_stock boolean
+  generated always as (min_stock > 0 and stock <= min_stock) stored;
+
+alter table public.products
+  drop column if exists is_out_of_stock;
+alter table public.products
+  add column is_out_of_stock boolean
+  generated always as (stock <= 0) stored;
+
 create index if not exists products_category_idx on public.products (category_id);
 create index if not exists products_name_idx on public.products (name);
 create index if not exists products_is_active_idx on public.products (is_active);
