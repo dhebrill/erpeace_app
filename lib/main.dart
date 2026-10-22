@@ -47,8 +47,8 @@ Future<void> main() async {
     runApp(
       const _ConfigurationErrorApp(
         message:
-            'Aplikasi gagal terhubung ke server. Periksa konfigurasi .env lalu '
-            'jalankan ulang aplikasi.',
+            'Aplikasi gagal terhubung ke server. Periksa konfigurasi Supabase '
+            '(.env atau --dart-define) lalu jalankan ulang aplikasi.',
       ),
     );
     return;
@@ -106,8 +106,8 @@ class _ConfigurationErrorApp extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Salin .env.example menjadi .env, isi SUPABASE_URL dan '
-                        'SUPABASE_ANON_KEY, lalu jalankan ulang aplikasi.',
+                        'Isi SUPABASE_URL dan SUPABASE_ANON_KEY pada file .env, '
+                        'atau jalankan aplikasi dengan --dart-define.',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
