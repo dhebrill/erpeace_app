@@ -70,3 +70,22 @@ enum UserRole {
     }
   }
 }
+
+/// Extra helpers of [UserRole].
+extension UserRoleInfo on UserRole {
+  /// Short description of the permissions of the role.
+  String get description {
+    switch (this) {
+      case UserRole.admin:
+        return 'Akses penuh, termasuk kelola pengguna';
+      case UserRole.manager:
+        return 'Melihat semua data dan menyetujui order';
+      case UserRole.warehouse:
+        return 'Mengelola produk, stok, dan opname';
+      case UserRole.sales:
+        return 'Mengelola pelanggan dan sales order';
+      case UserRole.purchasing:
+        return 'Mengelola supplier dan purchase order';
+    }
+  }
+}
