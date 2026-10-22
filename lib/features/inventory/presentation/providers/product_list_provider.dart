@@ -56,3 +56,8 @@ final productStockHistoryProvider =
 final lowStockProductsProvider = FutureProvider<List<Product>>((ref) {
   return ref.watch(productRepositoryProvider).fetchLowStockProducts();
 });
+
+/// Reads every active product, used by the purchase and sales order pickers.
+final activeProductListProvider = FutureProvider<List<Product>>((ref) {
+  return ref.watch(productRepositoryProvider).fetchActiveProducts();
+});

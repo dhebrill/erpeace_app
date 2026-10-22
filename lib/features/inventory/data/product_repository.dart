@@ -290,6 +290,24 @@ class ProductRepository {
     }
   }
 
+  /// Reads every active product, used by the transaction pickers.
+  Future<List<Product>> fetchActiveProducts({int limit = 200}) async {
+    try {
+      final rows = await _client
+          .from(AppConstants.tProducts)
+          .select('*, categories(name)')
+          .eq('is_active', true)
+          .order('name', ascending: true)
+          .limit(limit);
+
+      return rows
+          .map((row) => Product.fromRow(Map<String, dynamic>.from(row)))
+          .toList(growable: false);
+    } catch (error) {
+      throw ErrorHandler.map(error);
+    }
+  }
+
   /// Reads every product that dropped below its minimum stock level.
   Future<List<Product>> fetchLowStockProducts({int limit = 20}) async {
     try {

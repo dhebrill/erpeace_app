@@ -45,4 +45,17 @@ abstract final class CurrencyFormatter {
     if (parsed == null || parsed.isNaN || parsed.isInfinite) return null;
     return parsed;
   }
+
+  /// Parses a quantity, where the dot is a decimal separator.
+  ///
+  /// Quantities are typed without thousand separators, so a single dot
+  /// always means "decimal" here.
+  static double? tryParseQuantity(String raw) {
+    var cleaned = raw.trim().replaceAll(',', '.');
+    cleaned = cleaned.replaceAll(RegExp(r'[^0-9.\-]'), '');
+    if (cleaned.isEmpty) return null;
+    final parsed = double.tryParse(cleaned);
+    if (parsed == null || parsed.isNaN || parsed.isInfinite) return null;
+    return parsed;
+  }
 }
