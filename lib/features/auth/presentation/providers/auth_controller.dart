@@ -141,6 +141,17 @@ class AuthController extends Notifier<AuthState> {
           );
 
       final user = response.user;
+
+      // Supabase only returns a session when the email confirmation is
+      // disabled. Otherwise the account has to be confirmed first.
+      if (response.session == null) {
+        state = AuthState(
+          status: AuthStatus.awaitingEmailConfirmation,
+          user: user,
+        );
+        return;
+      }
+
       if (user != null) {
         state = AuthState(status: AuthStatus.awaitingApproval, user: user);
         await _loadProfile(user);
@@ -153,6 +164,26 @@ class AuthController extends Notifier<AuthState> {
         isSubmitting: false,
         errorMessage: failure.message,
         status: AuthStatus.unauthenticated,
+      );
+      throw failure;
+    }
+  }
+
+  /// Sends the confirmation email again.
+  Future<void> resendConfirmationEmail() async {
+    final address = state.email;
+    if (address.isEmpty) {
+      throw const Failure('Alamat email tidak ditemukan.');
+    }
+    state = state.copyWith(isSubmitting: true, clearError: true);
+    try {
+      await ref.read(authRepositoryProvider).resendConfirmationEmail(address);
+      state = state.copyWith(isSubmitting: false);
+    } catch (error) {
+      final failure = ErrorHandler.map(error);
+      state = state.copyWith(
+        isSubmitting: false,
+        errorMessage: failure.message,
       );
       throw failure;
     }

@@ -24,7 +24,7 @@ class AuthRepository {
     try {
       final data = await _client
           .from(AppConstants.tProfiles)
-          .select('id, full_name, role, is_active, created_at')
+          .select('id, full_name, email, role, is_active, created_at')
           .eq('id', userId)
           .maybeSingle();
 
@@ -56,6 +56,15 @@ class AuthRepository {
         password: password,
         data: {'full_name': fullName},
       );
+    } catch (error) {
+      throw ErrorHandler.map(error);
+    }
+  }
+
+  /// Sends the confirmation email again to a user that has not confirmed yet.
+  Future<void> resendConfirmationEmail(String email) async {
+    try {
+      await _client.auth.resend(type: OtpType.signup, email: email);
     } catch (error) {
       throw ErrorHandler.map(error);
     }

@@ -11,6 +11,9 @@ enum AuthStatus {
   /// No user is signed in.
   unauthenticated,
 
+  /// The account was created but the email address is not confirmed yet.
+  awaitingEmailConfirmation,
+
   /// The user signed up but has not been activated by an admin yet.
   awaitingApproval,
 
@@ -38,6 +41,9 @@ class AuthState {
 
   bool get isAwaitingApproval => status == AuthStatus.awaitingApproval;
 
+  bool get isAwaitingEmailConfirmation =>
+      status == AuthStatus.awaitingEmailConfirmation;
+
   UserRole? get role => profile?.role;
 
   String get displayName {
@@ -46,6 +52,9 @@ class AuthState {
     final email = user?.email ?? '';
     return email.isEmpty ? 'Pengguna' : email.split('@').first;
   }
+
+  /// The email address of the signed in user, falling back to the auth user.
+  String get email => profile?.email ?? user?.email ?? '';
 
   AuthState copyWith({
     AuthStatus? status,

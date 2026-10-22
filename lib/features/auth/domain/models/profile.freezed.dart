@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Profile {
 
- String get id; String get fullName; UserRole get role; bool get isActive; DateTime? get createdAt;
+ String get id; String get fullName; String? get email; UserRole get role; bool get isActive; DateTime? get createdAt;
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProfileCopyWith<Profile> get copyWith => _$ProfileCopyWithImpl<Profile>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Profile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Profile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,fullName,role,isActive,createdAt);
+int get hashCode => Object.hash(runtimeType,id,fullName,email,role,isActive,createdAt);
 
 @override
 String toString() {
-  return 'Profile(id: $id, fullName: $fullName, role: $role, isActive: $isActive, createdAt: $createdAt)';
+  return 'Profile(id: $id, fullName: $fullName, email: $email, role: $role, isActive: $isActive, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProfileCopyWith<$Res>  {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) _then) = _$ProfileCopyWithImpl;
 @useResult
 $Res call({
- String id, String fullName, UserRole role, bool isActive, DateTime? createdAt
+ String id, String fullName, String? email, UserRole role, bool isActive, DateTime? createdAt
 });
 
 
@@ -65,11 +65,12 @@ class _$ProfileCopyWithImpl<$Res>
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = null,Object? role = null,Object? isActive = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = null,Object? email = freezed,Object? role = null,Object? isActive = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
-as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String fullName,  UserRole role,  bool isActive,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String fullName,  String? email,  UserRole role,  bool isActive,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
-return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdAt);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.role,_that.isActive,_that.createdAt);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdA
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String fullName,  UserRole role,  bool isActive,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String fullName,  String? email,  UserRole role,  bool isActive,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Profile():
-return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdAt);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.role,_that.isActive,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdA
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String fullName,  UserRole role,  bool isActive,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String fullName,  String? email,  UserRole role,  bool isActive,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
-return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdAt);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.role,_that.isActive,_that.createdAt);case _:
   return null;
 
 }
@@ -213,11 +214,12 @@ return $default(_that.id,_that.fullName,_that.role,_that.isActive,_that.createdA
 @JsonSerializable()
 
 class _Profile implements Profile {
-  const _Profile({required this.id, this.fullName = '', this.role = UserRole.sales, this.isActive = false, this.createdAt});
+  const _Profile({required this.id, this.fullName = '', this.email, this.role = UserRole.sales, this.isActive = false, this.createdAt});
   factory _Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
 @override final  String id;
 @override@JsonKey() final  String fullName;
+@override final  String? email;
 @override@JsonKey() final  UserRole role;
 @override@JsonKey() final  bool isActive;
 @override final  DateTime? createdAt;
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Profile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.role, role) || other.role == role)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Profile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,fullName,role,isActive,createdAt);
+int get hashCode => Object.hash(runtimeType,id,fullName,email,role,isActive,createdAt);
 
 @override
 String toString() {
-  return 'Profile(id: $id, fullName: $fullName, role: $role, isActive: $isActive, createdAt: $createdAt)';
+  return 'Profile(id: $id, fullName: $fullName, email: $email, role: $role, isActive: $isActive, createdAt: $createdAt)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   factory _$ProfileCopyWith(_Profile value, $Res Function(_Profile) _then) = __$ProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String fullName, UserRole role, bool isActive, DateTime? createdAt
+ String id, String fullName, String? email, UserRole role, bool isActive, DateTime? createdAt
 });
 
 
@@ -272,11 +274,12 @@ class __$ProfileCopyWithImpl<$Res>
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = null,Object? role = null,Object? isActive = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = null,Object? email = freezed,Object? role = null,Object? isActive = null,Object? createdAt = freezed,}) {
   return _then(_Profile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
-as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as UserRole,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,

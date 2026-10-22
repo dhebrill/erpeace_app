@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/domain/models/user_role.dart';
 import '../../features/auth/presentation/providers/auth_controller.dart';
+import '../../features/auth/presentation/screens/email_confirmation_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/pending_approval_screen.dart';
@@ -56,6 +57,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.emailConfirmation,
+        builder: (context, state) => const EmailConfirmationScreen(),
       ),
       GoRoute(
         path: AppRoutes.pendingApproval,
@@ -131,6 +136,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           return path == AppRoutes.splash ? null : AppRoutes.splash;
         case AuthStatus.unauthenticated:
           return _publicPaths.contains(path) ? null : AppRoutes.login;
+        case AuthStatus.awaitingEmailConfirmation:
+          return path == AppRoutes.emailConfirmation
+              ? null
+              : AppRoutes.emailConfirmation;
         case AuthStatus.awaitingApproval:
           return path == AppRoutes.pendingApproval
               ? null
@@ -138,7 +147,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         case AuthStatus.authenticated:
           if (_publicPaths.contains(path) ||
               path == AppRoutes.splash ||
-              path == AppRoutes.pendingApproval) {
+              path == AppRoutes.pendingApproval ||
+              path == AppRoutes.emailConfirmation) {
             return AppRoutes.dashboard;
           }
           final module = AppModule.fromPath(path);

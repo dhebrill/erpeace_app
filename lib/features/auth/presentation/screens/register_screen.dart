@@ -48,9 +48,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             fullName: _nameController.text,
           );
       if (!mounted) return;
+      final status = ref.read(authControllerProvider).status;
       AppSnackBar.showSuccess(
         context,
-        'Pendaftaran berhasil. Menunggu persetujuan admin.',
+        status == AuthStatus.awaitingEmailConfirmation
+            ? 'Pendaftaran berhasil. Silakan cek email Anda.'
+            : 'Pendaftaran berhasil. Menunggu persetujuan admin.',
       );
     } catch (error) {
       if (!mounted) return;
