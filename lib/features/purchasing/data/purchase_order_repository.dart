@@ -60,7 +60,7 @@ class PurchaseOrderRepository {
     try {
       final builder = _client
           .from(AppConstants.tPurchaseOrders)
-          .select('*, suppliers(name)');
+          .select('*, suppliers(name), purchase_order_items(count)');
 
       final status = query.status;
       if (status != null) {
@@ -100,7 +100,7 @@ class PurchaseOrderRepository {
     try {
       final orderRow = await _client
           .from(AppConstants.tPurchaseOrders)
-          .select('*, suppliers(name)')
+          .select('*, suppliers(name), purchase_order_items(count)')
           .eq('id', id)
           .single();
 
@@ -212,7 +212,20 @@ class PurchaseOrderRepository {
         ? (supplier.first as Map)['name'] as String?
         : null;
 
-    return PurchaseOrder.fromJson({...row, 'supplier_name': supplierName});
+    return PurchaseOrder.fromJson({
+      ...row,
+      'supplier_name': supplierName,
+      'item_count': _itemCount(row['purchase_order_items']),
+    });
+  }
+
+  /// Reads the line count of an embedded `purchase_order_items(count)` select.
+  int _itemCount(dynamic embedded) {
+    if (embedded is! List || embedded.isEmpty) return 0;
+    final first = embedded.first;
+    if (first is! Map) return 0;
+    final count = first['count'];
+    return count is num ? count.toInt() : 0;
   }
 
   Map<String, dynamic>? _firstRow(dynamic rows) {

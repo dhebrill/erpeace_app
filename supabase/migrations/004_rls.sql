@@ -447,6 +447,34 @@ create policy document_counters_all on public.document_counters
   with check (false);
 
 -- =====================================================================
+-- Table permissions
+-- =====================================================================
+-- Every list screen and the dashboard read through PostgREST, so the
+-- authenticated role needs SELECT on every table. Which rows are visible
+-- is still decided by the RLS policies above.
+grant select on all tables in schema public to authenticated;
+
+-- Write access is granted on the tables the app edits; the RLS policies
+-- decide which role may write which row.
+grant insert, update, delete on
+  public.categories,
+  public.customers,
+  public.products,
+  public.profiles,
+  public.purchase_order_items,
+  public.purchase_orders,
+  public.sales_order_items,
+  public.sales_orders,
+  public.stock_movements,
+  public.stock_opname_items,
+  public.stock_opnames,
+  public.suppliers
+to authenticated;
+
+-- Anonymous visitors never touch business data.
+revoke all on all tables in schema public from anon;
+
+-- =====================================================================
 -- Function permissions
 -- =====================================================================
 -- Revoke the default PUBLIC grant first, then hand the permissions out
