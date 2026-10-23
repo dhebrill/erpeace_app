@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_confirm_dialog.dart';
@@ -166,6 +168,25 @@ class SettingsScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
+                if (role.isAdmin) ...[
+                  const SizedBox(height: AppSpacing.lg),
+                  AppSectionTitle(title: 'Administrasi'),
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.admin_panel_settings_rounded,
+                        color: scheme.primary,
+                      ),
+                      title: const Text('Kelola pengguna'),
+                      subtitle: const Text(
+                        'Setujui akun baru dan atur role pengguna',
+                      ),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: () => GoRouter.of(context).go(AppRoutes.admin),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: AppSpacing.lg),
                 AppSectionTitle(title: 'Akun'),
                 AppCard(
