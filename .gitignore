@@ -1,6 +1,7 @@
 # Environment / secrets
 # `.env` is committed as an empty template so the app builds out of the box.
 # Never store real credentials there - pass them with --dart-define instead.
+.env
 .env.local
 .env.*.local
 
