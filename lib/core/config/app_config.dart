@@ -1,6 +1,7 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-/// Runtime configuration loaded from the `.env` asset.
+/// Runtime configuration supplied at build/run time.
+///
+/// Values are read from `--dart-define` or `--dart-define-from-file=.env` so
+/// credentials never need to be bundled as a Flutter asset.
 class AppConfig {
   const AppConfig({required this.supabaseUrl, required this.supabaseAnonKey});
 
@@ -10,14 +11,12 @@ class AppConfig {
   static const String urlKey = 'SUPABASE_URL';
   static const String anonKey = 'SUPABASE_ANON_KEY';
 
-  /// Loads the `.env` asset and validates the required keys.
+  /// Loads configuration from `--dart-define` (or `--dart-define-from-file`).
   ///
   /// Throws [AppConfigException] with a user friendly message when the
   /// configuration is missing so the app can show a helpful screen instead of
   /// crashing.
-  static Future<AppConfig> load() async {
-    await dotenv.load(fileName: '.env', isOptional: true);
-
+  static AppConfig load() {
     final url = _resolve(urlKey);
     final key = _resolve(anonKey);
 
@@ -26,7 +25,7 @@ class AppConfig {
     if (missing.isNotEmpty) {
       throw AppConfigException(
         'Konfigurasi belum lengkap. Isi variabel ${missing.join(' dan ')} '
-        'pada file .env atau lewat --dart-define, lalu jalankan ulang '
+        'lewat --dart-define atau --dart-define-from-file=.env, lalu jalankan ulang '
         'aplikasi.',
       );
     }
@@ -40,16 +39,12 @@ class AppConfig {
     return AppConfig(supabaseUrl: url, supabaseAnonKey: key);
   }
 
-  /// Reads [key] from `--dart-define` first, falling back to the `.env` asset.
-  ///
-  /// `--dart-define` keeps real credentials out of the repository, which is the
-  /// recommended setup for release builds.
+  /// Reads [key] from `--dart-define` (supports `--dart-define-from-file`).
   static String _resolve(String key) {
-    const fromDefine = String.fromEnvironment('SUPABASE_URL');
+    const fromDefineUrl = String.fromEnvironment('SUPABASE_URL');
     const fromDefineKey = String.fromEnvironment('SUPABASE_ANON_KEY');
-    final defined = key == urlKey ? fromDefine : fromDefineKey;
-    if (defined.trim().isNotEmpty) return defined.trim();
-    return dotenv.maybeGet(key)?.trim() ?? '';
+    final defined = key == urlKey ? fromDefineUrl : fromDefineKey;
+    return defined.trim();
   }
 }
 

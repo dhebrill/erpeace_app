@@ -33,7 +33,7 @@ Future<void> main() async {
   final preferences = await SharedPreferences.getInstance();
 
   try {
-    final config = await AppConfig.load();
+    final config = AppConfig.load();
 
     await Supabase.initialize(
       url: config.supabaseUrl,
@@ -46,9 +46,9 @@ Future<void> main() async {
   } catch (error) {
     runApp(
       const _ConfigurationErrorApp(
-        message:
-            'Aplikasi gagal terhubung ke server. Periksa konfigurasi Supabase '
-            '(.env atau --dart-define) lalu jalankan ulang aplikasi.',
+            message:
+                'Aplikasi gagal terhubung ke server. Periksa konfigurasi Supabase '
+                '(lewat --dart-define atau --dart-define-from-file) lalu jalankan ulang aplikasi.',
       ),
     );
     return;
@@ -106,8 +106,8 @@ class _ConfigurationErrorApp extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Isi SUPABASE_URL dan SUPABASE_ANON_KEY pada file .env, '
-                        'atau jalankan aplikasi dengan --dart-define.',
+                        'Isi SUPABASE_URL dan SUPABASE_ANON_KEY lewat '
+                        '--dart-define atau --dart-define-from-file=.env.',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -76,7 +76,7 @@ dipanggil langsung.
 | Backend | Supabase (PostgreSQL, Auth, RLS, RPC) |
 | Model | freezed + json_serializable (`build_runner`) |
 | UI | Material 3, google_fonts, shimmer, fl_chart |
-| Format | intl (`id_ID`), shared_preferences, flutter_dotenv |
+| Format | intl (`id_ID`), shared_preferences |
 
 ---
 
@@ -85,7 +85,7 @@ dipanggil langsung.
 ```
 lib/
   core/                     # fondasi lintas fitur
-    config/                 # AppConfig (.env / --dart-define)
+    config/                 # AppConfig (--dart-define / --dart-define-from-file)
     constants/              # rute, modul, nama tabel
     error/                  # Failure + ErrorHandler
     router/                 # go_router + shell navigasi
@@ -124,8 +124,8 @@ repository, tidak ada panggilan Supabase langsung dari widget.
 ```bash
 flutter pub get
 ```
-File `.env` sudah disertakan sebagai templat kosong agar proyek langsung bisa
-di-build. Lihat langkah 3 untuk mengisi kredensial.
+Proyek ini tidak mengharuskan meng-commit `.env`. Salin `.env.example` menjadi
+`.env` hanya untuk penggunaan lokal, atau langsung pakai `--dart-define-from-file`.
 
 ### 2. Siapkan database Supabase
 Buka **Supabase Dashboard → SQL Editor**, lalu jalankan file berikut **sesuai urutan**:
@@ -142,25 +142,22 @@ Semua file bersifat idempoten; menjalankannya ulang tidak menggandakan data.
 
 ### 3. Konfigurasi koneksi
 Aplikasi membaca dua variabel: `SUPABASE_URL` dan `SUPABASE_ANON_KEY`
-(Project Settings → API).
+(Project Settings → API). Kredensial **tidak** dibundel dari repo.
 
-Opsi A — file `.env` (paling cepat):
+Opsi A — `--dart-define-from-file` (paling nyaman):
+```bash
+cp .env.example .env  # isi nilainya di .env lokal (tidak di-commit)
+flutter run --dart-define-from-file=.env
 ```
-SUPABASE_URL=https://<project-ref>.supabase.co
-SUPABASE_ANON_KEY=<anon/publishable key>
-```
-> `.env` di repositori ini hanya templat kosong. Jangan meng-commit kredensial
-> asli; gunakan opsi B untuk build rilis.
 
-Opsi B — `--dart-define` (disarankan, kredensial tidak masuk repo):
+Opsi B — `--dart-define` langsung:
 ```bash
 flutter run \
   --dart-define=SUPABASE_URL=https://<project-ref>.supabase.co \
   --dart-define=SUPABASE_ANON_KEY=<anon/publishable key>
 ```
 
-Nilai `--dart-define` diprioritaskan di atas isi `.env`. Jika konfigurasi kosong,
-aplikasi menampilkan layar bantuan, bukan crash.
+Jika konfigurasi kosong, aplikasi menampilkan layar bantuan, bukan crash.
 
 ### 4. Jalankan
 ```bash
